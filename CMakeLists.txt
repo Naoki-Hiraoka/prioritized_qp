@@ -25,14 +25,11 @@ add_library(${PROJECT_NAME}
   )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
-  ${catkin_LIBRARIES}
   OsqpEigen::OsqpEigen
   )
 
-message(${EIGEN3_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC
   include
-  ${catkin_INCLUDE_DIRS}
 )
 
 #############
