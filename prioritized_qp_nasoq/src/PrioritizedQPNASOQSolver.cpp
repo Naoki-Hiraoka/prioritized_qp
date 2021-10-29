@@ -1,4 +1,5 @@
 #include <prioritized_qp_nasoq/PrioritizedQPNASOQSolver.h>
+#include <iostream>
 
 namespace prioritized_qp_nasoq{
 
