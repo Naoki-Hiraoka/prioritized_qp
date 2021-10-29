@@ -1,6 +1,0 @@
-- git:
-    local-name: Naoki-Hiraoka/qp_solvers
-    uri: git@github.com:Naoki-Hiraoka/qp_solvers.git
-- git:
-    local-name: Naoki-Hiraoka/prioritized_qp
-    uri: git@github.com:Naoki-Hiraoka/prioritized_qp.git
