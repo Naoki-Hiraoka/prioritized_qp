@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.0.2)
 project(prioritized_qp)
 
 add_compile_options(-std=c++11)
-set(CMAKE_BUILD_TYPE RelWithDebInfo)
+set(CMAKE_BUILD_TYPE Release)
 
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED COMPONENTS prioritized_qp_base)
 find_package(OsqpEigen REQUIRED)
 
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
@@ -12,6 +12,7 @@ set(CMAKE_BUILD_TYPE RelWithDebInfo)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES prioritized_qp
+  CATKIN_DEPENDS prioritized_qp_base
   DEPENDS OsqpEigen
 )
 
@@ -25,11 +26,13 @@ add_library(${PROJECT_NAME}
   )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
+  ${catkin_LIBRARIES}
   OsqpEigen::OsqpEigen
   )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
   include
+  ${catkin_INCLUDE_DIRS}
 )
 
 #############

@@ -1,9 +1,10 @@
-#include <prioritized_qp/PrioritizedQPSolver.h>
+#include <prioritized_qp_base/PrioritizedQPBaseSolver.h>
+#include <iostream>
 
-namespace prioritized_qp{
+namespace prioritized_qp_base{
   bool solve(std::vector< std::shared_ptr<Task> >& tasks, Eigen::VectorXd& result, int debuglevel){
     if(tasks.size()==0) {
-      std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] no task is provided" << std::endl;
+      std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] no task is provided" << std::endl;
       return false;
     }
 
@@ -12,52 +13,52 @@ namespace prioritized_qp{
     for(size_t i=0;i<tasks.size();i++){
       if(dim<0) dim = tasks[i]->A().cols();
       if(dim != tasks[i]->A().cols()){
-        std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] dimension mismatch (dim != tasks[i]->A().cols())" << std::endl;
+        std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] dimension mismatch (dim != tasks[i]->A().cols())" << std::endl;
         return false;
       }
       if(dim != tasks[i]->C().cols()){
-        std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] dimension mismatch (dim != tasks[i]->C().cols())" << std::endl;
+        std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] dimension mismatch (dim != tasks[i]->C().cols())" << std::endl;
         return false;
       }
       if(tasks[i]->toSolve() && (dim != tasks[i]->w().size())){
-        std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->toSolve() && (dim != tasks[i]->w().size()))" << std::endl;
+        std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->toSolve() && (dim != tasks[i]->w().size()))" << std::endl;
         return false;
       }
 
       if(tasks[i]->A().rows() != tasks[i]->b().size()){
-        std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->A().rows() != tasks[i]->b().size())" << std::endl;
+        std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->A().rows() != tasks[i]->b().size())" << std::endl;
         return false;
       }
       if(tasks[i]->toSolve() && tasks[i]->A().rows() != tasks[i]->wa().size()){
-        std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->toSolve() && tasks[i]->A().rows() != tasks[i]->wa().size())" << std::endl;
+        std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->toSolve() && tasks[i]->A().rows() != tasks[i]->wa().size())" << std::endl;
         return false;
       }
       if(tasks[i]->C().rows() != tasks[i]->dl().size() || tasks[i]->C().rows() != tasks[i]->du().size()){
-        std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->C().rows() != tasks[i]->dl().size() || tasks[i]->C().rows() != tasks[i]->du().size())" << std::endl;
+        std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->C().rows() != tasks[i]->dl().size() || tasks[i]->C().rows() != tasks[i]->du().size())" << std::endl;
         return false;
       }
       if(tasks[i]->toSolve() && tasks[i]->C().rows() != tasks[i]->wc().size()){
-        std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->toSolve() && tasks[i]->C().rows() != tasks[i]->wc().size())" << std::endl;
+        std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->toSolve() && tasks[i]->C().rows() != tasks[i]->wc().size())" << std::endl;
         return false;
       }
       if(tasks[i]->A_ext().cols() != tasks[i]->C_ext().cols()){
-        std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->A_ext().cols() != tasks[i]->C_ext().cols())" << std::endl;
+        std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->A_ext().cols() != tasks[i]->C_ext().cols())" << std::endl;
         return false;
       }
       if(tasks[i]->id_ext().size() != 0 && tasks[i]->A_ext().cols() != tasks[i]->id_ext().size()){
-        std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->id_ext().size() != 0 && tasks[i]->A_ext().cols() != tasks[i]->id_ext().size())" << std::endl;
+        std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->id_ext().size() != 0 && tasks[i]->A_ext().cols() != tasks[i]->id_ext().size())" << std::endl;
         return false;
       }
       if(tasks[i]->A_ext().cols() != 0 && tasks[i]->A_ext().rows() != tasks[i]->A().rows()){
-        std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->A_ext().cols() != 0 && tasks[i]->A_ext().rows() != tasks[i]->A().rows())" << std::endl;
+        std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->A_ext().cols() != 0 && tasks[i]->A_ext().rows() != tasks[i]->A().rows())" << std::endl;
         return false;
       }
       if(tasks[i]->C_ext().cols() != 0 && tasks[i]->C_ext().rows() != tasks[i]->C().rows()){
-        std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->C_ext().cols() != 0 && tasks[i]->C_ext().rows() != tasks[i]->C().rows())" << std::endl;
+        std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->C_ext().cols() != 0 && tasks[i]->C_ext().rows() != tasks[i]->C().rows())" << std::endl;
         return false;
       }
       if(tasks[i]->toSolve() && tasks[i]->A_ext().cols() != tasks[i]->w_ext().size()){
-        std::cerr << "[prioritized_qp::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->toSolve() && tasks[i]->A_ext().cols() != tasks[i]->w_ext().size())" << std::endl;
+        std::cerr << "[prioritized_qp_base::PriroritizedQPSolver::solve] dimension mismatch (tasks[i]->toSolve() && tasks[i]->A_ext().cols() != tasks[i]->w_ext().size())" << std::endl;
         return false;
       }
     }
@@ -174,45 +175,15 @@ namespace prioritized_qp{
           A.insert(As.rows() - tasks[i]->A().rows() - tasks[i]->C().rows() + j, As.cols() + j) = 1;
         }
 
-        if(!tasks[i]->solver().isInitialized() ||
-           tasks[i]->solver().workspace()->data->n != H.rows() ||
-           tasks[i]->solver().workspace()->data->m != A.rows()
-           ){
-          tasks[i]->solver().data()->clearHessianMatrix();
-          tasks[i]->solver().data()->clearLinearConstraintsMatrix();
-          tasks[i]->solver().clearSolver();
-
-          tasks[i]->solver().data()->setNumberOfVariables(H.cols());
-          tasks[i]->solver().data()->setNumberOfConstraints(A.rows());
-          tasks[i]->solver().data()->setHessianMatrix(H);
-          tasks[i]->solver().data()->setGradient(gradient);
-          tasks[i]->solver().data()->setLinearConstraintsMatrix(A);
-          tasks[i]->solver().data()->setLowerBound(lowerBound);
-          tasks[i]->solver().data()->setUpperBound(upperBound);
-
-          tasks[i]->solver().initSolver();
+        if(tasks[i]->isInitializeSolverRequired(H,A)){
+          tasks[i]->initializeSolver(H,gradient,A,lowerBound,upperBound);
         }else{
-          // OsqpEigenのsolver.data()はsetGradientとsetUpperBound, setLowerBound時にEigenの配列のポインタをそのまま保持する。solver.data()は、initSolver時にosqpにコピーされる.問題は、updateHessianMatrixやupdateLinearConstraintsMatrixの時に、配列の埋まっている部分が変化した場合にもinitSolverが呼ばれることである. このときにeigenの配列がデストラクトされていたらメモリ外にアクセスしてしまう)
-          // solver.data()は、initSolver時にosqpにコピーされ, update関数はosqpにコピーされた方の値を直接操作する。結果,配列の埋まっている部分が変化した場合にinitSolverが呼ばれたときに、古いsolver.data()の値で初期化されてしまう。
-          // これら2つのバグを避けるためには、solver.dataを毎回セットし直すしかない。これらの処理は、通常のupdate時には必要ないものである
-          tasks[i]->solver().data()->clearHessianMatrix();
-          tasks[i]->solver().data()->clearLinearConstraintsMatrix();
-          tasks[i]->solver().data()->setHessianMatrix(H);
-          tasks[i]->solver().data()->setGradient(gradient);
-          tasks[i]->solver().data()->setLinearConstraintsMatrix(A);
-          tasks[i]->solver().data()->setLowerBound(lowerBound);
-          tasks[i]->solver().data()->setUpperBound(upperBound);
-
-          tasks[i]->solver().updateHessianMatrix(Eigen::SparseMatrix<double,Eigen::ColMajor>(H)); // OsqpEigenの実装の都合上，ColMajorでないとサイレントにバグが起こる
-          tasks[i]->solver().updateGradient(gradient);
-          tasks[i]->solver().updateLinearConstraintsMatrix(Eigen::SparseMatrix<double,Eigen::ColMajor>(A)); // OsqpEigenの実装の都合上，ColMajorでないとサイレントにバグが起こる
-          tasks[i]->solver().updateBounds(lowerBound,upperBound);//upperとlower同時にupdateしないと，一時的にupperがlowerを下回ってエラーになる
+          tasks[i]->updateSolver(H,gradient,A,lowerBound,upperBound);
         }
 
-        bool solved = tasks[i]->solver().solve();
+        bool solved = tasks[i]->solve();
         if(!solved) {
-          tasks[i]->solver().clearSolverVariables();
-          solved = tasks[i]->solver().solve();
+          solved = tasks[i]->solve(true);
         }
         if(!solved) {
           if(debuglevel){
@@ -239,7 +210,7 @@ namespace prioritized_qp{
           return false;
         }
 
-        solution = tasks[i]->solver().getSolution().head(As.cols());
+        solution = tasks[i]->getSolution().head(As.cols());
 
         Eigen::VectorXd this_b = taskA * solution;
         Eigen::VectorXd this_d = taskC * solution;

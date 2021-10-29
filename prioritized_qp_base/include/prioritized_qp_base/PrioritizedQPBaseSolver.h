@@ -1,10 +1,10 @@
-#ifndef PRIORITIZEDQPSOLVER_H
-#define PRIORITIZEDQPSOLVER_H
+#ifndef PRIORITIZEDQPBASESOLVER_H
+#define PRIORITIZEDQPBASESOLVER_H
 
-#include <OsqpEigen/OsqpEigen.h>
-#include <Eigen/Dense>
+#include <Eigen/Eigen>
+#include <memory>
 
-namespace prioritized_qp{
+namespace prioritized_qp_base{
   class Task
   {
     /*
@@ -40,7 +40,7 @@ namespace prioritized_qp{
     Eigen::VectorXd w() const { return w_; }
     Eigen::VectorXd& w() { return w_; }
 
-    // 追加の変数に対応. 最大値最小化等で用いる
+    // 追加の変数に対応. 最大値最小化等で用いる. 設定しなくてもよい
     std::vector<std::string> id_ext() const { return id_ext_;} //各追加変数のタスク間の対応をあらわす
     std::vector<std::string>& id_ext() { return id_ext_;}
 
@@ -53,12 +53,28 @@ namespace prioritized_qp{
     Eigen::VectorXd w_ext() const { return w_ext_; }
     Eigen::VectorXd& w_ext() { return w_ext_; }
 
-    // settingsの設定はユーザーが行うこと
-    OsqpEigen::Solver& solver() { return solver_; }
-
+    // Trueにすると解く
     bool toSolve() const {return toSolve_; }
     bool& toSolve() {return toSolve_; }
 
+    /*
+      min 0.5 xHx + gx
+      s.t lB <= Ax <= cB
+    */
+    virtual bool isInitializeSolverRequired(Eigen::SparseMatrix<double,Eigen::ColMajor>& H,
+                                      Eigen::SparseMatrix<double,Eigen::ColMajor>& A) =0;
+    virtual bool initializeSolver(Eigen::SparseMatrix<double,Eigen::ColMajor>& H,
+                                  Eigen::VectorXd& g,
+                                  Eigen::SparseMatrix<double,Eigen::ColMajor>& A,
+                                  Eigen::VectorXd& lowerBound,
+                                  Eigen::VectorXd& upperBound) =0;
+    virtual bool updateSolver(Eigen::SparseMatrix<double,Eigen::ColMajor>& H,
+                              Eigen::VectorXd& g,
+                              Eigen::SparseMatrix<double,Eigen::ColMajor>& A,
+                              Eigen::VectorXd& lowerBound,
+                              Eigen::VectorXd& upperBound) =0;
+    virtual bool solve(bool forceColdStart=false)=0;
+    virtual Eigen::VectorXd getSolution()=0;
   private:
     std::string name_;
 
@@ -77,7 +93,6 @@ namespace prioritized_qp{
     Eigen::SparseMatrix<double,Eigen::RowMajor> C_ext_;
     Eigen::VectorXd w_ext_;
 
-    OsqpEigen::Solver solver_;
     bool toSolve_;
   };
 
