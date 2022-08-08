@@ -13,7 +13,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES prioritized_qp
   CATKIN_DEPENDS prioritized_qp_base
-  DEPENDS OsqpEigen
+  #DEPENDS
 )
 
 ###########
