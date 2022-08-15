@@ -13,7 +13,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES prioritized_qp
   CATKIN_DEPENDS prioritized_qp_base
-  DEPENDS OsqpEigen
+  #DEPENDS OsqpEigen
 )
 
 ###########
@@ -27,12 +27,14 @@ add_library(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
   ${catkin_LIBRARIES}
-  OsqpEigen::OsqpEigen
+  #OsqpEigen::OsqpEigen # -isystemでこのワークスペースのdevel/includeがinclude_directoriesに入るのだが、優先順位末尾に入ってしまう
+  $<TARGET_PROPERTY:OsqpEigen::OsqpEigen,INTERFACE_LINK_LIBRARIES>
   )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
   include
   ${catkin_INCLUDE_DIRS}
+  $<TARGET_PROPERTY:OsqpEigen::OsqpEigen,INTERFACE_INCLUDE_DIRECTORIES>
 )
 
 #############
