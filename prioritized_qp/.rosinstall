@@ -1,3 +1,7 @@
 - git:
     local-name: Naoki-Hiraoka/qp_solvers
     uri: https://github.com/Naoki-Hiraoka/qp_solvers.git
+- git:
+    local-name: osqp-eigen
+    uri: https://github.com/robotology/osqp-eigen.git
+    version: v0.7.0
