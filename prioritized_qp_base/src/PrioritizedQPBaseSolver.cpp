@@ -178,7 +178,9 @@ namespace prioritized_qp_base{
         if(tasks[i]->isInitializeSolverRequired(H,A)){
           tasks[i]->initializeSolver(H,gradient,A,lowerBound,upperBound);
         }else{
-          tasks[i]->updateSolver(H,gradient,A,lowerBound,upperBound);
+          if(!tasks[i]->updateSolver(H,gradient,A,lowerBound,upperBound)){
+            tasks[i]->initializeSolver(H,gradient,A,lowerBound,upperBound);
+          }
         }
 
         bool solved = tasks[i]->solve();

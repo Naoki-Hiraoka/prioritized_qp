@@ -50,6 +50,8 @@ namespace prioritized_qp{
     this->solver_.updateGradient(gradient);
     this->solver_.updateLinearConstraintsMatrix(Eigen::SparseMatrix<double,Eigen::ColMajor>(A)); // OsqpEigenの実装の都合上，ColMajorでないとサイレントにバグが起こる
     this->solver_.updateBounds(lowerBound,upperBound);//upperとlower同時にupdateしないと，一時的にupperがlowerを下回ってエラーになる
+
+    return true;
   }
 
   bool Task::solve(bool forceColdStart){

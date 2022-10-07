@@ -7,8 +7,6 @@ set(CMAKE_BUILD_TYPE Release)
 find_package(catkin REQUIRED COMPONENTS prioritized_qp_base)
 find_package(OsqpEigen REQUIRED)
 
-set(CMAKE_BUILD_TYPE RelWithDebInfo)
-
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES prioritized_qp
