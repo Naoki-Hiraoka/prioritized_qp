@@ -1,0 +1,1 @@
+O. Kanoun, F. Lamiraux, P. -B. Wieber, F. Kanehiro, E. Yoshida and J. -P. Laumond, "Prioritizing linear equality and inequality systems: Application to local motion planning for redundant robots," 2009 IEEE International Conference on Robotics and Automation, Kobe, Japan, 2009, pp. 2939-2944, doi: 10.1109/ROBOT.2009.5152293.
