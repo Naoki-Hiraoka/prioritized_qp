@@ -96,6 +96,10 @@ namespace prioritized_qp_base{
     bool toSolve_;
   };
 
+  // debuglevel
+  //   0: no debug message
+  //   1: time measure
+  //   2: internal state
   bool solve(std::vector< std::shared_ptr<Task> >& tasks, Eigen::VectorXd& result, int debuglevel=0);
 
 };

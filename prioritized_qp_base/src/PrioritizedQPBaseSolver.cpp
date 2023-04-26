@@ -136,7 +136,7 @@ namespace prioritized_qp_base{
 
       if(!tasks[i]->toSolve() ||
          (tasks[i]->A().rows()==0 && tasks[i]->C().rows()==0)){
-        if(debuglevel){
+        if(debuglevel > 1){
           std::cerr << tasks[i]->name() << std::endl;
           std::cerr << "A" << std::endl;
           std::cerr << taskA << std::endl;
@@ -188,7 +188,7 @@ namespace prioritized_qp_base{
           solved = tasks[i]->solve(true);
         }
         if(!solved) {
-          if(debuglevel){
+          if(debuglevel > 1){
             std::cerr << tasks[i]->name() << std::endl;
             std::cerr << "A" << std::endl;
             std::cerr << taskA << std::endl;
@@ -225,7 +225,7 @@ namespace prioritized_qp_base{
           if(this_d(j)<tasks[i]->dl()(j)) lBs(lBs.rows() - tasks[i]->C().rows() + j) = this_d(j);
         }
 
-        if(debuglevel){
+        if(debuglevel > 1){
           std::cerr << tasks[i]->name() << std::endl;
           std::cerr << "solution" << std::endl;
           std::cerr << solution << std::endl;
@@ -251,7 +251,7 @@ namespace prioritized_qp_base{
 
     result = solution.head(dim);
 
-    if(debuglevel){
+    if(debuglevel > 1){
       std::cerr << "result" << std::endl;
       std::cerr << solution << std::endl;
       std::cerr << "As" << std::endl;
