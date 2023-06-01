@@ -78,7 +78,7 @@ namespace prioritized_qp_base{
     for(size_t i=0;i<tasks.size();i++){
       Eigen::SparseMatrix<double,Eigen::RowMajor> taskA = tasks[i]->A();
       Eigen::SparseMatrix<double,Eigen::RowMajor> taskC = tasks[i]->C();
-      if(tasks[i]->A_ext().cols() != 0){
+      {
         size_t additionalCols = 0;
         if(tasks[i]->id_ext().size() == 0) additionalCols = tasks[i]->A_ext().cols();
         else{
